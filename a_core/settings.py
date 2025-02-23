@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-gu=i_ut2n5vux!xsd1jmshmonh%fo@!d9!ayv2(_$wgoj!sjpm'
+ENCRYPT_KEY=b'Rc3-imdoNOnauChlrjrM8u4S8Dx0ajeO9Cf6dJQGe_E='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,10 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_htmx',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'django_cleanup.apps.CleanupConfig',
     'a_posts',
+    'a_users',
+    'a_inbox',
 ]
 SITE_ID = 1
 
@@ -56,6 +61,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware', 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = 'a_core.urls'
@@ -130,14 +136,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Adjust based on your folder structure
+]
 
 # Media files (uploaded images)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -146,3 +154,6 @@ LOGIN_REDIRECT_URL='/'
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 ACCOUNT_AUTHENTICATION_METHOD='email'
 ACCOUNT_EMAIL_REQUIRED=True
+
+
+ACCOUNT_USERNAME_BLACKLIST=['admin','accounts','profile','catagory','post','inbox']

@@ -1,31 +1,54 @@
 {% extends "account/base_entrance.html" %}
 {% load i18n %}
 {% load allauth account %}
+
 {% block head_title %}
     {% trans "Sign In" %}
 {% endblock head_title %}
+
 {% block content %}
     {% element h1 %}
         {% trans "Sign In" %}
     {% endelement %}
+
     {% if not SOCIALACCOUNT_ONLY %}
-        {% setvar link %}
-            <a href="{{ signup_url }}">
-            {% endsetvar %}
-            {% setvar end_link %}
-            </a>
-        {% endsetvar %}
+        {% setvar link %}<a href="{{ signup_url }}">{% endsetvar %}
+        {% setvar end_link %}</a>{% endsetvar %}
+
         {% element p %}
-            {% blocktranslate %}If you have not created an account yet, then please {{ link }}sign up{{ end_link }} first.{% endblocktranslate %}
+            {% blocktranslate %}If you have not created an account yet, then please {{ link }}<b>Sign Up</b>{{ end_link }} first.{% endblocktranslate %}
         {% endelement %}
+
         {% url 'account_login' as login_url %}
         {% element form form=form method="post" action=login_url tags="entrance,login" %}
             {% slot body %}
                 {% csrf_token %}
-                {% element fields form=form unlabeled=True %}
-                {% endelement %}
+
+                <!-- Display non-field errors (e.g., incorrect email/password) -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
                 {{ redirect_field }}
             {% endslot %}
+
             {% slot actions %}
                 {% element button type="submit" tags="prominent,login" %}
                     {% trans "Sign In" %}
@@ -33,9 +56,9 @@
             {% endslot %}
         {% endelement %}
     {% endif %}
+
     {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
-        {% element hr %}
-        {% endelement %}
+        {% element hr %}{% endelement %}
         {% element button_group vertical=True %}
             {% if PASSKEY_LOGIN_ENABLED %}
                 {% element button type="submit" form="mfa_login" id="passkey_login" tags="prominent,login,outline,primary" %}
@@ -49,10 +72,12 @@
             {% endif %}
         {% endelement %}
     {% endif %}
+
     {% if SOCIALACCOUNT_ENABLED %}
         {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
     {% endif %}
 {% endblock content %}
+
 {% block extra_body %}
     {{ block.super }}
     {% if PASSKEY_LOGIN_ENABLED %}

@@ -1,0 +1,82 @@
+{% extends "layouts/b.html" %}
+
+{% block content %}
+<div id="profile" class="flex flex-col items-center"> 
+    <div x-data="{ modal_open: false }" class="card p-6">
+        <div class="text-center flex flex-col items-center">
+            <img class="w-36 h-36 rounded-full object-cover mb-4" src="{{ profile.avatar }}" />
+            <div class="text-center max-w-md">
+                <h1>{{ profile.name }}</h1>
+                <div class="text-gray-400 mb-2 -mt-3">@{{ profile.user.username }}</div>
+                <div class="flex items-center justify-center mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 mr-1 opacity-60">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C8.134 2 5 5.134 5 9c0 4.25 4.5 9.5 6.5 11.5a1 1 0 001.5 0C14.5 18.5 19 13.25 19 9c0-3.866-3.134-7-7-7zm0 11a4 4 0 110-8 4 4 0 010 8z"/>
+                    </svg>
+                    
+                    {% if profile.location %}
+                        {{ profile.location }}
+                    {% else %}
+                        Planet Earth
+                    {% endif %}
+                </div>
+                <div class="my-8">
+                    {% if profile.bio %}
+                        {{ profile.bio }}
+                    {% else %}
+                        No Bio
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-2 right-2 px-4 py-2 mb-3">
+            <a @click="modal_open = true" class="flex cursor-pointer items-center gap-2 bg-gray-200 hover:bg-gray-300 rounded-lg p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 mr-1 opacity-60">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L11 13M22 2L15 22l-4-9L2 9l20-7z"/>
+                </svg>
+                
+                <span class="text-gray-800 font-medium hidden lg:block">All</span>
+            </a>
+        </div>
+        
+        <div x-show="modal_open" x-cloak class="fixed inset-0 z-10 flex items-center justify-center bg-gray-500 bg-opacity-75">
+            <div @click.away="modal_open = false" class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6">
+                {% include 'a_inbox/form_message.html' with recipient=profile.user %}
+                <div class="flex justify-end mt-4">
+                    <button @click="modal_open = false" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div id="tabs" class="flex justify-center my-4 gap-2" hx-target="#tab-contents" hx-swap="innerHTML"
+    _="on htmx: afterOnLoad take .selected for event.target"> 
+        <a hx-get="{% url 'userprofile' profile.user.username %}" class="tab selected">Latest</a>
+        <a hx-get="{% url 'userprofile' profile.user.username %}?top-posts" class="tab">Top Posts</a>  
+        <a hx-get="{% url 'userprofile' profile.user.username %}?top-comments" class="tab">Top Comments</a>
+        <a hx-get="{% url 'userprofile' profile.user.username %}?liked-posts" class="tab">Liked Posts</a>
+    </div>
+
+    <div id="tab-contents" class="w-full flex flex-col items-center">
+        
+    <div class="grid place-items-start gap-x-8 mx-auto max-w-xl
+       {% if posts.count <= 1 %}
+        {% elif posts.count == 2 %}  lg:grid-cols-2 lg:max-w-5xl
+        {% else %} lg:grid-cols-2 lg:max-w-5xl xl:grid-cols-3 xl:max-w-7xl
+        {% endif %}">
+        {% if posts %}
+            {% for post in posts %}
+            {% include 'a_posts/post.html' %}
+            {% endfor %}
+        {% else %}
+            <div class="w-full text-center mt-10">No posts just yet </div>
+        
+        {% endif %}
+        
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
