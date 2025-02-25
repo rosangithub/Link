@@ -217,3 +217,7 @@ def like_comment(request,post):
 @like_toggle(Reply)
 def like_reply(request,post):
     return render(request,'snippets/like_reply.html',{'reply':post})
+
+
+
+

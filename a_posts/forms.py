@@ -5,18 +5,18 @@ from .models import *
 
 class PostCreateForm(ModelForm):
     class Meta:
-       model =Post
-       fields=['url','body','tags']
-       labels={
-           'body':'Caption',
-           'tags':'Category',
+       model = Post
+       fields = ['url','body', 'tags']  # Added 'media' field
+       labels = {
+           'body': 'Caption',
+           'tags': 'Category',
        }
-       widgets={
-           'body': forms.Textarea(attrs={'rows':3,'placeholder':'Add a Caption...','class':'font1 text-3xl'}),
-           'url':forms.TextInput(attrs={'placeholder':'Add urls...'}),
-           'tags':forms.CheckboxSelectMultiple(),
+       widgets = {
+           'body': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Add a Caption...', 'class': 'font1 text-3xl'}),
+           'url': forms.TextInput(attrs={'placeholder': 'Add URLs...'}),
+           'tags': forms.CheckboxSelectMultiple(),
        }
-
+    
 
 
 class PostEditForm(ModelForm):

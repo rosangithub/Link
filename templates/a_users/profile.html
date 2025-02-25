@@ -28,6 +28,82 @@
                 </div>
             </div>
         </div>
+        <form action="{% url 'follow' %}" method="POST" id="follow-form">
+            {% csrf_token %}
+            
+            <!-- Add Button and Display Followers & Following Information -->
+            <div class="add-btn">
+                <div class="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg shadow-lg">
+                    <ul class="flex space-x-6 font-font1 hoverlist">
+                        <!-- Follower Count -->
+                        <li class="hover:text-bold text-2xl cursor-pointer transition-all duration-300 ease-in-out">
+                            {% if user_follower == 0 or user_follower == 1 %}
+                                <i class="fas fa-users mr-2"></i>{{ user_follower }} Follower
+                            {% else %}
+                                <i class="fas fa-users mr-2"></i>{{ user_follower }} Followers
+                            {% endif %}
+                        </li>
+        
+                        <!-- Following Count -->
+                        <li class="hover:text-bold text-2xl cursor-pointer transition-all duration-300 ease-in-out">
+                            {% if user_following == 0 or user_following == 1 %}
+                                <i class="fas fa-user-friends mr-2"></i>{{ user_following }} Following
+                            {% else %}
+                                <i class="fas fa-user-friends mr-2"></i>{{ user_following }} Followings
+                            {% endif %}
+                        </li>
+        
+                        <!-- Follow Button -->
+                        <li class="hover:text-bold text-2xl cursor-pointer transition-all duration-300 ease-in-out">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            <button type="submit" id="follow-button">
+                                {% if user_object.username == user.username %}
+                                    Edit
+                                {% else %}
+                                    {% if user_object.username in user_following_list %}
+                                        Unfollow
+                                    {% else %}
+                                        Follow
+                                    {% endif %}
+                                {% endif %}
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+        
+                <!-- Hidden Inputs to Pass User Information -->
+                <input type="hidden" name="follower" value="{{ user.username }}">
+                <input type="hidden" name="user" value="{{ user_object.username }}">
+            </div>
+        </form>
+        
+        <script>
+            // Example: Toggle Follow/Unfollow Button Text and Submit Form
+            document.addEventListener('DOMContentLoaded', function () {
+                const followButton = document.getElementById('follow-button');
+                const form = document.getElementById('follow-form');
+        
+                // Toggle follow/unfollow on click and submit the form
+                if (followButton) {
+                    followButton.addEventListener('click', function (e) {
+                        e.preventDefault(); // Prevent default form submission
+                        
+                        // Toggle the button text based on the action
+                        if (followButton.textContent.trim() === "Follow") {
+                            followButton.textContent = "Unfollow";
+                        } else {
+                            followButton.textContent = "Follow";
+                        }
+        
+                        // Submit the form after toggling the button text
+                        form.submit();
+                    });
+                }
+            });
+        </script>
+        
+        
+
         <div class="absolute bottom-2 right-2 px-4 py-2 mb-3">
             <a @click="modal_open = true" class="flex cursor-pointer items-center gap-2 bg-gray-200 hover:bg-gray-300 rounded-lg p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 mr-1 opacity-60">
@@ -79,4 +155,6 @@
     </div>
 
 </div>
+
+
 {% endblock %}

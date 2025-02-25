@@ -1,12 +1,143 @@
+<style>
+    /* Chat Container */
+    #conversation {
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(135deg,rgb(5, 17, 38),rgb(29, 98, 91), #64748B); /* Gradient from dark blue to slate */
+        border-radius: 1rem;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        color: white; /* Ensuring text is readable */
+    }
+
+    /* Chat Header */
+    .chat-header {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: linear-gradient(135deg,rgb(22, 3, 43),rgb(155, 44, 127)); /* Gradient from purple to blue */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        text:bold;
+    }
+
+    .chat-header img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+    }
+
+    /* Messages Container */
+    #messages-container {
+        flex-grow: 1;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column-reverse;
+        overflow-y: auto;
+        background: linear-gradient(135deg, #1E293B, #2C3E50, #3B4252); /* Smooth dark gradient */
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0px 2px 10px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+        color: black; /* Text color for readability */
+    }
+
+    /* Message Bubble */
+    .message {
+        max-width: 70%;
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        font-size: 0.9rem;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow for better depth */
+        position: relative;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        word-wrap: break-word;
+      
+    }
+    
+    /* Sent Message (User) */
+    .message.sent {
+        align-self: flex-end;
+        background: linear-gradient(135deg, #4F46E5, #6D28D9); /* Attractive gradient */
+        color: white;
+    }
+    
+    /* Received Message (Other User) */
+    .message.received {
+        align-self: flex-start;
+        background: linear-gradient(135deg,rgb(217, 127, 225),rgb(231, 136, 216)); /* Subtle gray-blue gradient */
+        color: black;
+    }
+    
+    /* Hover Effect for Messages */
+    .message:hover {
+        transform: scale(1.02);
+        box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.25);
+    }
+    
+    /* Adding a slight fade-in animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .message {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    
+
+    .message.sent {
+        align-self: flex-end;
+        background:rgb(56, 48, 215);
+        color: white;
+    }
+
+    .message.received {
+        align-self: flex-start;
+        background:rgb(232, 216, 235);
+        color: black;
+    }
+
+    /* Reply Button */
+    .reply-button {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .reply-button a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #4f46e5;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 999px;
+        transition: background 0.3s;
+    }
+
+    .reply-button a:hover {
+        background: #4338ca;
+    }
+</style>
+
 <div id="conversation" class="col-span-4 sm:col-span-3 flex flex-col bg-white rounded-r-2xl relative h-[calc(100vh-8rem)]">
     
     <!-- Chat Header -->
     {% if conversation %}
-    <div class="p-4 border-b flex items-center gap-4 bg-white">
+    <div class="chat-header">
         {% for participant in conversation.participants.all %}
         {% if participant != request.user %}
         <a href="{% url 'userprofile' participant.username %}">
-            <img class="w-12 h-12 rounded-full" src="{{ participant.profile.avatar }}">
+            <img src="{{ participant.profile.avatar }}">
         </a>
         <div>
             <h1 class="text-lg font-bold">{{ participant.profile.name }}</h1>
@@ -16,47 +147,36 @@
         {% endfor %}
     </div>
 
-    <!-- Messages Container (Scrolls from Bottom) -->
+    <!-- Messages Container -->
     <div id="messages-container" class="flex-grow overflow-y-auto h-full p-4 flex flex-col-reverse">
         <ul id="inbox-messages" class="flex flex-col gap-4">
             {% for message in conversation.messages.all %}
-            <li class="flex {% if message.sender == request.user %}justify-end{% else %}justify-start{% endif %} space-x-2">
-                
-                <!-- Avatar for incoming messages -->
+            <li class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
                 {% if message.sender != request.user %}
                 <a href="{% url 'userprofile' message.sender.username %}">
                     <img class="w-10 h-10 rounded-full" src="{{ message.sender.profile.avatar }}">
                 </a>
                 {% endif %}
-
-                <!-- Message Bubble -->
-                <div class="{% if message.sender == request.user %}bg-indigo-600 text-white{% else %}bg-gray-200 text-gray-900{% endif %} px-4 py-2 rounded-2xl max-w-md sm:max-w-lg shadow-md">
-                    <p class="text-sm whitespace-pre-wrap">{{ message.body_decrypted }}</p>
-                    <p class="text-xs text-gray-400 mt-1">{{ message.created|timesince }} ago</p>
-                </div>
-
+                <p>{{ message.body_decrypted }}</p>
+                <p class="text-xs text-gray-400 mt-1">{{ message.created|timesince }} ago</p>
             </li>
             {% empty %}
-            <!-- If there are no messages -->
             <li class="text-center text-gray-500">No messages yet. Start the conversation!</li>
             {% endfor %}
         </ul>
     </div>
 
     <!-- Sticky Reply Button -->
-      <div class="sticky bottom-0 z-10 px-4 sm:px-10 pt-6 pb-10 flex bg-white">
-        <a class="flex items-center gap-2 bg-gray-800 hover:bg-indigo-600 text-white rounded-full px-4 py-2 transition duration-300 ease-in-out"
-        hx-get="{% url 'inbox-newreply' conversation.id %}"
-        hx-target="#inbox-messages"
-        hx-swap="beforeend"
-        onclick="scrollToBottom(true)">
+    <div class="reply-button">
+        <a href="#"
+           hx-get="{% url 'inbox-newreply' conversation.id %}"
+           hx-target="#inbox-messages"
+           hx-swap="beforeend"
+           onclick="scrollToBottom(true)">
             <img class="h-6" src="https://img.icons8.com/material/96/ffffff/reply-arrow--v1.png">
-            <span class="text-white font-medium">Reply</span>  
+            <span class="font-medium">Reply</span>
         </a>
     </div>
- 
-   
-    
 
     {% else %}
     <div class="h-full flex items-center justify-center text-gray-500 -mt-6 text-center p-10">
@@ -69,7 +189,6 @@
 <script>
     function scrollToBottom(force = false) {
         let messagesContainer = document.getElementById("messages-container");
-
         if (messagesContainer) {
             if (force) {
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -82,12 +201,10 @@
         }
     }
 
-    // Scroll to bottom when the page loads
     window.onload = function() {
         scrollToBottom(true);
     };
 
-    // Scroll to bottom when new messages arrive (HTMX event)
     document.body.addEventListener("htmx:afterSwap", function(event) {
         scrollToBottom();
     });

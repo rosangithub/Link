@@ -7,6 +7,7 @@ class Post(models.Model):
     artist=models.CharField(max_length=500,null=True)
     url=models.URLField(max_length=500,null=True)
     image =models.URLField(max_length=500)
+    media=models.FileField(upload_to='post_content',null=True)
     body=models.TextField()
     likes=models.ManyToManyField(User,related_name="likedposts",through="LikedPost")
     author=models.ForeignKey(User,on_delete=models.SET_NULL,null=True,related_name='posts')
@@ -97,3 +98,12 @@ class LikeReply(models.Model):
     
     def __str__(self):
         return f'{self.user.username} : {self.reply.body[:30]}'
+    
+
+# class FollowerCount(models.Model):
+#     follower=models.CharField(max_length=100)
+#     user=models.CharField(max_length=100)
+    
+
+#     def __str__(self):
+#         return self.user

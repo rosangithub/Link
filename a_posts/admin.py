@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import *
+# from a_users.models import FollowerCount
+
 
 # Register your models here.
 admin.site.register(Post)

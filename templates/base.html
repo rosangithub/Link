@@ -6,244 +6,339 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LinkUp |</title>
- 
-     <link rel="shortcut icon" type="image/png" href="https://img.icons8.com/small/64/000000/fire-heart.png"/>
-    <link rel="icon" type="image/png" href="https://img.icons8.com/small/64/ffffff/link.png">
-    
-    <link rel="icon" href="{% static 'image/logo1.png' %}" type="image/png">
-
-
+     {% comment %} <link rel="shortcut icon" type="image/png" href="https://img.icons8.com/small/64/000000/fire-heart.png"/> {% endcomment %}
+    {% comment %} <link rel="icon" type="image/png" href="{% static 'image/logo1.png' %}"> {% endcomment %}
+    {% comment %} <link rel="icon" href="{% static 'image/logo1.png' %}" type="image/png"> {% endcomment %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/logo1.png' %}"><!--this is for the browser-->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
-    <style type="text/tailwindcss">
-        [x-cloak] { 
-            display: none !important; 
+        <!-- Adding Favicon for the Website -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+        <!-- Font Awesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+    /* Smooth transitions */
+    body {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+        background-color: #1a1a1a;
+        color:black; /* Text turns white in dark mode */
+    }
+    
+    /* Toggle Switch Styling */
+    .toggle-container {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        background: #ccc;
+        width: 50px;
+        height: 25px;
+        border-radius: 50px;
+        position: relative;
+        transition: background 0.3s ease;
+    }
+    
+    /* The circle inside the toggle */
+    .toggle-circle {
+        width: 20px;
+        height: 20px;
+        background: white;
+        position: absolute;
+        top: 2.5px;
+        left: 3px;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+    }
+    
+    /* Dark mode active styles */
+    .dark-mode .toggle-container {
+        background: #4A90E2;
+    }
+    
+    .dark-mode .toggle-circle {
+        transform: translateX(25px);
+    }
+    
+    /* Sun and Moon Icons */
+    .toggle-container i {
+        position: absolute;
+        font-size: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .toggle-container .sun-icon {
+        left: 6px;
+        color: #ffffff;
+        display: block;
+    }
+    
+    .toggle-container .moon-icon {
+        right: 6px;
+        color: #000000;
+        display: block;
+    }
+    
+    .dark-mode .toggle-container .sun-icon {
+        display: block;
+    }
+    
+    .dark-mode .toggle-container .moon-icon {
+        display: none;
+    }
+    
+    /* For text outside of the body */
+    body:not(.dark-mode) {
+        color: black; /* Text is black in light mode */
+    }
+    
+</style>
+
+<style type="text/tailwindcss">
+    [x-cloak] { 
+        display: none !important; 
+    }
+    :root {
+        --primary: rgb(88, 40, 244);
+        --primary-hover: rgb(69, 29, 200);
+        --black: #1f2937;
+        --font1: 'Lobster', sans-serif;
+    }
+    h1 {
+        @apply text-4xl font-bold mb-4
+    }
+    h2 {
+        @apply text-2xl font-bold mb-3
+    }
+    h3 {
+        @apply text-lg font-bold 
+    }
+    .font1 {
+        font-family: var(--font1);
+    }
+    .button, button, [type='submit'], [type='button'] {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        text-align: center;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        padding: 0 1rem;
+        min-height: 3.3rem;
+        font-weight: 600;
+        box-shadow: 0 4px 3px rgba(0, 0, 0, 0.1);
+        transition-property: transform;
+        transition-duration: .2s;
+        color: white;
+        background-color: var(--primary);
+        width: fit-content;
+    }
+    .button:hover, button:hover, [type='submit']:hover, [type='button']:hover {
+        background-color: var(--primary-hover);
+    }
+    .button:active, button:active, [type='submit']:active, [type='button']:active {
+        transform: scale(0.95);
+    }
+    .secondaryAction {
+        background-color: white;
+        color: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+    }
+    .secondaryAction:hover, .button.secondaryAction:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    {% comment %} .navitems>li>a {
+        @apply flex items-center gap-2 h-12 px-4 hover:bg-gray-700 rounded-lg;
+    } {% endcomment %}
+    .navitems > li > a {
+        @apply h-12 px-4 rounded-lg flex items-center gap-2 transition-all duration-300 
+        hover:bg-blue-700 hover:text-white transform hover:scale-110 hover:shadow-md;
+    }
+    .card {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+        border-radius: 1rem;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);
+        margin-bottom: 2rem;
+        {% comment %} background-color: blu; {% endcomment %}
+        padding-bottom: 1rem;
+        width: 100%;
+    }
+    {% comment %} .hoverlist>* {
+        @apply hover:bg-gray-100 rounded-md transition duration-150;
+    }
+    .hoverlist>*>a {
+        @apply flex items-center p-2;
+    } {% endcomment %}
+    .hoverlist>* {
+        @apply hover:bg-gray-200 rounded-md transition duration-300 transform hover:scale-105 hover:shadow-lg;
+
         }
-        :root {
-            --primary: rgb(88, 40, 244);
-            --primary-hover: rgb(69, 29, 200);
-            --black: #1f2937;
-            --font1: 'Lobster', sans-serif;
+        .hoverlist>*>a{
+        @apply  flex items-center p-2 block;
         }
-        h1 {
-            @apply text-4xl font-bold mb-4
+    .highlight {
+        @apply !bg-indigo-100;
+    }
+    .titleBlip {
+        animation: 1s fadeIn;
+    }
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        10% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    html, body {
+        margin: 0;
+        min-height: 100%;
+    }
+    p {
+        margin-bottom: 1rem;
+    }
+    form p {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    label, input {
+        display: inline-block;
+    }
+    form p label {
+        width: 7rem;
         }
-        h2 {
-            @apply text-2xl font-bold mb-3
-        }
-        h3 {
-            @apply text-lg font-bold 
-        }
-        .font1 {
-            font-family: var(--font1);
-        }
-        .button, button, [type='submit'], [type='button'] {
-            display: inline-flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            text-align: center;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            padding: 0 1rem;
-            min-height: 3.3rem;
-            font-weight: 600;
-            box-shadow: 0 4px 3px rgba(0, 0, 0, 0.1);
-            transition-property: transform;
-            transition-duration: .2s;
-            color: white;
-            background-color: var(--primary);
-            width: fit-content;
-        }
-        .button:hover, button:hover, [type='submit']:hover, [type='button']:hover {
-            background-color: var(--primary-hover);
-        }
-        .button:active, button:active, [type='submit']:active, [type='button']:active {
-            transform: scale(0.95);
-        }
-        .secondaryAction {
-            background-color: white;
-            color: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(0, 0, 0, 0.3);
-        }
-        .secondaryAction:hover, .button.secondaryAction:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-        .navitems>li>a {
-            @apply flex items-center gap-2 h-12 px-4 hover:bg-gray-700 rounded-lg;
-        }
-        .card {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-            border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            background-color: white;
-            padding-bottom: 1rem;
-            width: 100%;
-        }
-        .hoverlist>* {
-            @apply hover:bg-gray-100 rounded-md transition duration-150;
-        }
-        .hoverlist>*>a {
-            @apply flex items-center p-2;
-        }
-        .highlight {
-            @apply !bg-indigo-100;
-        }
-        .titleBlip {
-            animation: 1s fadeIn;
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            10% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        html, body {
-            margin: 0;
-            min-height: 100%;
-        }
-        p {
-            margin-bottom: 1rem;
-        }
-        form p {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        label, input {
-          display: inline-block;
-        }
-        form p label {
-            width: 7rem;
-            }
-        label {
-            margin: 6px 0 3px;
-        }
-        input, textarea {
-            width: 100%;
-        }
-        input[type="file"], select {
-            background-color: white;
-            padding-left: 0;
-        }
-        label[for="id_remember"] {
-            width: auto;
-            margin-right: 0.5rem;
-        }
-        input[name="remember"] {
-            width: auto;
-        }
-        .btn-red {
-            @apply inline-flex bg-red-500;
-        }
-        .btn-red:hover {
-            @apply bg-red-600;
-        }
-        .login .secondaryAction {
-            box-shadow: none;
-            display: block;
-            padding: none;
-            padding: 0px;
-            border: none;
-            font-size: smaller;
-            font-weight: normal;
-            min-height: auto;
-            margin-bottom: 1.5rem;
-        }
-        .login .secondaryAction:hover {
-            @apply text-gray-500 underline bg-white;
-        }
-        #id_tags {
-            margin-bottom: 1rem;
-        }
-        #id_tags div {
-            display: inline-block;
-            margin-right: 0.5rem;  
-        }
-        #id_tags div label {
-            border-radius: 9999px;
-            padding: 0.5rem 1rem;
-            border: 1px solid rgb(229 231 235);
-            width: auto;
-            cursor: pointer;
-            user-select: none;
-        }
-        #id_tags input {
-            display: none;
-        }
-        #id_tags label:has(input:checked) {
-            background-color: var(--black);
-            color: white;
-            border: 1px solid var(--black);
-        }
-        .textarea, textarea {
-            margin-bottom: 1rem;
-        }
-        .textarea, textarea, input {
-            border-radius: 0.5rem;
-            padding: 1rem 1.2rem;
-            background-color: rgba(232, 240, 254, 1);
-        }
-        .errorlist li {
-            color: rgb(253, 88, 49);
-            padding: 0.5rem;
-            padding-left: 1rem;
-            border-left: 5px solid rgb(253, 88, 49);
-            margin-bottom: 1rem;
-        }
-        .tab {
-            cursor: pointer;
-            padding: 0.75rem 1rem;
-            color: rgb(0,0,0,0.6); 
-            background-color: rgb(0,0,0,0.05);
-            border-radius: 0.75rem;
-            text-align: center;
-            display: flex;
-            align-items: center;
-        }
-        .tab:hover {
-            background-color: rgb(0,0,0,0.1);
-        }
-        .tab.selected {
-            color: white;
-            background-color: var(--black);
-        }
-        .replyform {
-            border-top: none;
-        }
-        .replyform textarea, .replyform input {
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            margin-bottom: 0px;
-            height: 3.2rem;
-        }
-        .replyform button {
-            margin-left: 0.5rem;
-            min-height: unset;
-        }
-        .fade-me-in.htmx-settling{
-            opacity: 0;
-        }
-        .fade-me-in {
-            opacity: 1;
-            transition: opacity 1s ease-out;
-        }
-        #profile article figure img {
-            @apply aspect-[3/2] object-cover;
-        }
-        #profile article p {
-            @apply truncate leading-normal;
-        }
-    </style>
+    label {
+        margin: 6px 0 3px;
+    }
+    input, textarea {
+        width: 100%;
+    }
+    input[type="file"], select {
+        background-color: white;
+        padding-left: 0;
+    }
+    label[for="id_remember"] {
+        width: auto;
+        margin-right: 0.5rem;
+    }
+    input[name="remember"] {
+        width: auto;
+    }
+    .btn-red {
+        @apply inline-flex bg-red-500;
+    }
+    .btn-red:hover {
+        @apply bg-red-600;
+    }
+    .login .secondaryAction {
+        box-shadow: none;
+        display: block;
+        padding: none;
+        padding: 0px;
+        border: none;
+        font-size: smaller;
+        font-weight: normal;
+        min-height: auto;
+        margin-bottom: 1.5rem;
+    }
+    .login .secondaryAction:hover {
+        @apply text-gray-500 underline bg-white;
+    }
+    #id_tags {
+        margin-bottom: 1rem;
+    }
+    #id_tags div {
+        display: inline-block;
+        margin-right: 0.5rem;  
+    }
+    #id_tags div label {
+        border-radius: 9999px;
+        padding: 0.5rem 1rem;
+        border: 1px solid rgb(229 231 235);
+        width: auto;
+        cursor: pointer;
+        user-select: none;
+    }
+    #id_tags input {
+        display: none;
+    }
+    #id_tags label:has(input:checked) {
+        background-color: var(--black);
+        color: white;
+        border: 1px solid var(--black);
+    }
+    .textarea, textarea {
+        margin-bottom: 1rem;
+    }
+    .textarea, textarea, input {
+        border-radius: 0.5rem;
+        padding: 1rem 1.2rem;
+        background-color: rgba(232, 240, 254, 1);
+    }
+    .errorlist li {
+        color: rgb(253, 88, 49);
+        padding: 0.5rem;
+        padding-left: 1rem;
+        border-left: 5px solid rgb(253, 88, 49);
+        margin-bottom: 1rem;
+    }
+    .tab {
+        cursor: pointer;
+        padding: 0.75rem 1rem;
+        color: rgb(0,0,0,0.6); 
+        background-color: rgb(0,0,0,0.05);
+        border-radius: 0.75rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+    }
+    .tab:hover {
+        background-color: rgb(0,0,0,0.1);
+    }
+    .tab.selected {
+        color: white;
+        background-color: var(--black);
+    }
+    .replyform {
+        border-top: none;
+    }
+    .replyform textarea, .replyform input {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        margin-bottom: 0px;
+        height: 3.2rem;
+    }
+    .replyform button {
+        margin-left: 0.5rem;
+        min-height: unset;
+    }
+    .fade-me-in.htmx-settling{
+        opacity: 0;
+    }
+    .fade-me-in {
+        opacity: 1;
+        transition: opacity 1s ease-out;
+    }
+    #profile article figure img {
+        @apply aspect-[3/2] object-cover;
+    }
+    #profile article p {
+        @apply truncate leading-normal;
+    }
+</style>
 </head>
 <body class="bg-gray-100">
 {% include 'includes/messages.html' %}

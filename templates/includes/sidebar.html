@@ -3,7 +3,7 @@
 x-transition:enter="duration-300 ease-out"
 x-transition:enter-start="opacity-0 -mt-96"
 x-transition:enter-end="opacity-100 mt-0">
-    <section class="card p-4">
+    <section class="card p-4 bg-blue-100">
         <h2>Categories</h2>
         <ul class="hoverlist">
             {% for catagory in catagories %}
@@ -18,7 +18,7 @@ x-transition:enter-end="opacity-100 mt-0">
 
 
     </section>
-    <section class="card p-4">
+    <section class="card p-4 bg-pink-100">
         <div class="flex items-center">
             <img class="w-7 mr-2 -mt-3" src="{% static 'images/fireheart_black.svg' %}"/>
             <h2>Top Posts</h2>
@@ -46,7 +46,7 @@ x-transition:enter-end="opacity-100 mt-0">
             
         </ul>
     </section>
-    <section class="card p-4">
+    <section class="card p-4 bg-blue-300">
         <div class="flex items-center">
             <img class="w-7 mr-2 -mt-3" src="{% static 'images/comment_icon.png' %}"/>
             <h2>Top Comments</h2>

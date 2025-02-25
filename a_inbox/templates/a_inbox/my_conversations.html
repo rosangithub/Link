@@ -18,3 +18,81 @@
     </li>
     {% endfor %}
 </ul>
+
+<style>
+    #conversations-list {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 0.75rem;
+    }
+    
+    #conversations-list li {
+        background-color: #ffffff;
+        padding: 0.75rem;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    
+    #conversations-list li:hover {
+        background-color: #e9ecef;
+        transform: translateY(-2px);
+    }
+    
+    #conversations-list li.bg-zinc-300 {
+        background-color: #d1d5db;
+    }
+    
+    #conversations-list li a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.75rem;
+        color: #343a40;
+        text-decoration: none;
+    }
+    
+    #conversations-list li a:hover {
+        color: #007bff;
+    }
+    
+    #conversations-list img {
+        width: 2.75rem;
+        height: 2.75rem;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    #conversations-list .hidden {
+        display: none;
+    }
+    
+    #conversations-list .lg\\:block {
+        display: block;
+    }
+    
+    #conversations-list .font-bold {
+        font-weight: bold;
+        color: #495057;
+    }
+    
+    #conversations-list .ml-1 {
+        margin-left: 0.25rem;
+    }
+    
+    #conversations-list .absolute {
+        position: absolute;
+        top: 0.5rem;
+        left: 2rem;
+        z-index: 10;
+    }
+    
+    #conversations-list li .absolute:hover {
+        border-color: #007bff;
+    }
+    
+    #conversations-list li a:hover img {
+        border-color: #007bff;
+    }
+    
+</style>
