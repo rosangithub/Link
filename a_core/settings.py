@@ -100,6 +100,51 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'djangodb',  # Name of the MySQL database
+#         'USER': 'root',  # Your MySQL username
+#         'PASSWORD': 'LinkUp',  # Your MySQL password
+#         'HOST': 'localhost',  # Set to the host of your MySQL server (use 'localhost' for local)
+#         'PORT': '3306',  # The default MySQL port
+#     }
+# }# No code was selected, so I will provide a code snippet that can be inserted at the cursor position to improve the existing code.
+
+# Add a custom logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
 
 
 # Password validation

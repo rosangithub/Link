@@ -31,9 +31,98 @@
     
     /* Dark Mode Styles */
     body.dark-mode {
-        background-color: #1a1a1a;
-        color:black; /* Text turns white in dark mode */
+        background-color: #1a1a1a; /* Dark gray background */
+        color: #f0f0f0; /* Light text color for readability */
     }
+    
+    body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+        color: #e0e0e0; /* Slightly lighter text for headings */
+    }
+    
+    body.dark-mode a {
+        color: #4fa3e0; /* Soft blue color for links */
+    }
+    
+    body.dark-mode a:hover {
+        color: #81b7f1; /* Lighter blue when hovering over links */
+    }
+    
+    body.dark-mode .button, body.dark-mode button {
+        background-color: #4fa3e0; /* Button with a soft blue background */
+        color: #ffffff; /* Button text in white */
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+    
+    body.dark-mode .button:hover, body.dark-mode button:hover {
+        background-color: #81b7f1; /* Lighter blue when hovering over buttons */
+    }
+    
+    body.dark-mode .card {
+        background-color: #2c2c2c; /* Dark gray cards */
+        border: 1px solid #444444; /* Subtle border */
+        padding: 20px;
+        border-radius: 8px;
+    }
+    
+    body.dark-mode .card h3 {
+        color: #f0f0f0; /* Card title text color */
+    }
+    
+    body.dark-mode .card p {
+        color: #bbbbbb; /* Card content text color */
+    }
+    
+    body.dark-mode .input-field {
+        background-color: #333333; /* Dark input field */
+        color:white; /* White text */
+        border: 1px solid #444444; /* Subtle border */
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    body.dark-mode .input-field:focus {
+        border-color: #4fa3e0; /* Blue border when focused */
+    }
+    body.dark-mode label, body.dark-mode input {
+        display: inline-block;
+        font-family: 'Arial', sans-serif; /* Font for consistency */
+        font-weight: 500; /* Slightly bold text for labels */
+        color: #f0f0f0; /* Light text color for labels */
+    }
+    
+    body.dark-mode input {
+        background-color: #333333; /* Dark input field background */
+        color: #ffffff; /* White text inside the input */
+        border: 1px solid #444444; /* Subtle border */
+        padding: 10px 15px;
+        border-radius: 5px;
+        width: 100%; /* Make input fields fill available width */
+        box-sizing: border-box; /* Ensure padding doesn't affect width */
+    }
+    
+    body.dark-mode input:focus {
+        border-color: #4fa3e0; /* Blue border when the input is focused */
+        outline: none; /* Remove the default focus outline */
+    }
+    
+    body.dark-mode input::placeholder {
+        color: #bbbbbb; /* Lighter color for placeholder text */
+    }
+    
+    body.dark-mode label {
+        margin-bottom: 5px;
+        font-size: 1rem; /* Slightly larger text for labels */
+        color: #e0e0e0; /* Slightly lighter color for labels compared to regular text */
+    }
+    
+    body.dark-mode .input-wrapper {
+        margin-bottom: 15px; /* Space between input fields */
+    }
+    
+    
+       
     
     /* Toggle Switch Styling */
     .toggle-container {

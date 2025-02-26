@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <form action="{% url 'follow' %}" method="POST" id="follow-form">
+        {% comment %} <form action="{% url 'follow' %}" method="POST" id="follow-form">
             {% csrf_token %}
             
             <!-- Add Button and Display Followers & Following Information -->
@@ -101,7 +101,7 @@
                 }
             });
         </script>
-        
+         {% endcomment %}
         
 
         <div class="absolute bottom-2 right-2 px-4 py-2 mb-3">
